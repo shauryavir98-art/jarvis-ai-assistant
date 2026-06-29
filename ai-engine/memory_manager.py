@@ -12,7 +12,14 @@ from threading import Lock
 
 logger = logging.getLogger("JARVIS.Memory")
 
-MEMORY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+# Detect Vercel environment
+IS_VERCEL = "VERCEL" in os.environ
+
+if IS_VERCEL:
+    MEMORY_DIR = "/tmp"
+else:
+    MEMORY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
 MEMORY_FILE = os.path.join(MEMORY_DIR, "conversations.json")
 MAX_HISTORY = 1000  # Maximum conversations to keep in memory
 

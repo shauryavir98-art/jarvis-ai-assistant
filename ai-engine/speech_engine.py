@@ -4,6 +4,7 @@ Provides speech-to-text and text-to-speech capabilities.
 Uses SpeechRecognition for STT and pyttsx3 for TTS.
 """
 
+import os
 import logging
 
 logger = logging.getLogger("JARVIS.Speech")
@@ -16,6 +17,11 @@ class SpeechEngine:
         """Initialize the speech engine."""
         self._tts_engine = None
         self._recognizer = None
+        
+        if "VERCEL" in os.environ:
+            logger.info("Speech engines disabled on Vercel serverless environment.")
+            return
+
         self._init_tts()
         self._init_stt()
 
