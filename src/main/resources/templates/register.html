@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS — Register</title>
+    <meta name="description" content="Create your JARVIS AI Assistant account">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="logo">
+            <h1><i class="bi bi-robot"></i> JARVIS</h1>
+            <p>Create your account</p>
+        </div>
+
+        <!-- Error alerts -->
+        <div th:if="${registrationError}" class="alert-error">
+            <i class="bi bi-exclamation-circle"></i> <span th:text="${registrationError}">Error</span>
+        </div>
+        <div th:if="${passwordError}" class="alert-error">
+            <i class="bi bi-exclamation-circle"></i> <span th:text="${passwordError}">Error</span>
+        </div>
+
+        <!-- Registration form -->
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <div class="form-group">
+                <label for="username"><i class="bi bi-person"></i> Username</label>
+                <input type="text" id="username" th:field="*{username}" class="form-control"
+                       placeholder="Choose a username" required>
+                <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                       style="color: #fca5a5; font-size: 0.8rem;"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="bi bi-envelope"></i> Email</label>
+                <input type="email" id="email" th:field="*{email}" class="form-control"
+                       placeholder="Enter your email" required>
+                <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                       style="color: #fca5a5; font-size: 0.8rem;"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="bi bi-lock"></i> Password</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control"
+                       placeholder="Create a password (min 6 chars)" required>
+                <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                       style="color: #fca5a5; font-size: 0.8rem;"></small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword"><i class="bi bi-lock-fill"></i> Confirm Password</label>
+                <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control"
+                       placeholder="Confirm your password" required>
+                <small th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"
+                       style="color: #fca5a5; font-size: 0.8rem;"></small>
+            </div>
+
+            <button type="submit" class="btn-primary-gradient" style="margin-top: 0.5rem;">
+                <i class="bi bi-person-plus"></i> Create Account
+            </button>
+        </form>
+
+        <div class="alt-link">
+            Already have an account? <a th:href="@{/login}">Sign in</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS — Chat</title>
+    <meta name="description" content="Chat with JARVIS AI Assistant">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- ──── Sidebar ──── -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class="bi bi-robot"></i> JARVIS</h2>
+            <small>AI Assistant v1.0</small>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a th:href="@{/dashboard}" class="nav-item">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+            <a th:href="@{/chat}" class="nav-item active">
+                <i class="bi bi-chat-dots-fill"></i> Chat
+            </a>
+            <a th:href="@{/reminders}" class="nav-item">
+                <i class="bi bi-bell-fill"></i> Reminders
+            </a>
+
+            <div class="nav-label">System</div>
+            <a href="#" class="nav-item">
+                <i class="bi bi-gear-fill"></i> Settings
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="avatar" th:text="${#strings.toUpperCase(#strings.substring(username, 0, 1))}">A</div>
+                <div class="user-info">
+                    <div class="user-name" th:text="${username}">admin</div>
+                </div>
+            </div>
+            <a th:href="@{/logout}" class="nav-item" style="margin-top: 0.75rem; padding-left: 0;">
+                <i class="bi bi-box-arrow-left"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- ──── Main Content ──── -->
+    <main class="main-content" style="padding: 1.5rem;">
+        <div class="chat-container">
+            <!-- Chat Messages Area -->
+            <div class="chat-messages" id="chatMessages">
+
+                <!-- Welcome message -->
+                <div class="message bot">
+                    <div class="msg-avatar">J</div>
+                    <div>
+                        <div class="msg-bubble">
+                            Hello! I'm <strong>JARVIS</strong>, your AI assistant. 🤖<br>
+                            How can I help you today? Ask me anything — from general knowledge to task management.
+                        </div>
+                        <div class="msg-time">System</div>
+                    </div>
+                </div>
+
+                <!-- Load chat history -->
+                <th:block th:each="chat : ${chatHistory}">
+                    <div class="message user">
+                        <div class="msg-avatar" th:text="${#strings.toUpperCase(#strings.substring(username, 0, 1))}">U</div>
+                        <div>
+                            <div class="msg-bubble" th:text="${chat.question}">Question</div>
+                            <div class="msg-time" th:text="${#temporals.format(chat.timestamp, 'hh:mm a')}">Time</div>
+                        </div>
+                    </div>
+                    <div class="message bot">
+                        <div class="msg-avatar">J</div>
+                        <div>
+                            <div class="msg-bubble" th:utext="${chat.response}">Response</div>
+                            <div class="msg-time" th:text="${#temporals.format(chat.timestamp, 'hh:mm a')}">Time</div>
+                        </div>
+                    </div>
+                </th:block>
+
+                <!-- Typing indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="msg-avatar" style="width:28px;height:28px;font-size:0.65rem;background:var(--gradient-primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;">J</div>
+                    <span>JARVIS is thinking</span>
+                    <div class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Type your message to JARVIS..."
+                       autocomplete="off" autofocus>
+                <button class="btn-send" id="sendBtn" disabled title="Send message">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/chat.js}"></script>
+</body>
+</html>
