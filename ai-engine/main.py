@@ -9,9 +9,13 @@ Endpoints:
 """
 
 import os
+import sys
 import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+# Add directory containing main.py to sys.path so Vercel can find adjacent modules
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from chatbot import JarvisChatbot
 from speech_engine import SpeechEngine
